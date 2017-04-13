@@ -94,6 +94,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
                 <h2>Table Menu</h2>
+				<p> <a href="create.php" class="btn btn-success">Add</a><font></font> <p/>
                 <table class="table table-bordered">
                   <thead>
                     <tr>
@@ -117,7 +118,7 @@
 				   
 				   
                    $pdo = Database::connect();
-                   $sql = 'SELECT * FROM menu ORDER BY idMenu';
+                   $sql = 'SELECT * FROM menu WHERE idParentMenu = 1 ORDER BY priority';
                    foreach ($pdo->query($sql) as $row) {
 							
                             echo '<tr>';
@@ -134,21 +135,24 @@
 							echo '<td width=250>';
 							
                                 //echo '<a class="btn" href="read.php?id='.$row['Title'].'">Read</a>';
-								echo '<a data-toggle="modal"  href="#read'. $row['idMenu'].'" class="btn btn-primary btn">Read</a>';
+								//echo '<a data-toggle="modal"  href="#read'. $row['idMenu'].'" class="btn btn-primary btn">Read</a>';
                                // UPDATE BUTTON echo '<a class="btn btn-success" href="update.php?id='.$row['idMenu'].'">Update</a>';
 								//<a href="#" data-reveal-id="myModal">Abrir la ventana modal</a>
-                                /*
+                                
                                 echo ' ';
-                                echo '<a class="btn btn-success" href="update.php?id='.$row['Title'].'">Update</a>';
+                                echo '<p><a class="btn btn-success" href="update.php?id='.$row['idMenu'].'">Update</a></p>';
                                 echo ' ';
-                                echo '<a class="btn btn-danger" href="delete.php?id='.$row['Title'].'">Delete</a>';
-                                */
+                                echo '<a class="btn btn-danger" href="delete.php?id='.$row['idMenu'].'">Delete</a>';
+                                
                                 echo '</td>';
 								
                             echo '</tr>';
 							
 							?>
-							
+		
+        
+
+        
                             
 							<?php
 							
