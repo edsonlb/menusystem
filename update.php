@@ -1,10 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php 
-    
-    require 'database.php';
 
-   if ( !empty($_POST)) {
+<?php
+    require 'database.php';
+ 
+    $id = null;
+    if ( !empty($_GET['id'])) {
+        $id = $_REQUEST['id'];
+    }
+     
+    if ( null==$id ) {
+        header("Location: index.php");
+    }
+     
+    if ( !empty($_POST)) {
         // keep track validation errors
         $idMenu = null;
         $italiano = null;
@@ -18,7 +27,7 @@
         $idRule = null;
         
 		
-		
+		$idMenu = $id;
         $italiano = $_POST['italiano'];
         $english = $_POST['english'];
 		$polski = $_POST['polski'];
@@ -78,37 +87,56 @@
         if ($valid) {
             $pdo = Database::connect();
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $sql = "INSERT INTO menu(italiano,english,polski,francais,idPage,width,priority,idParentMenu,idRule) values (?,?,?,?,?,?,?,?,?)";
+            $sql = "UPDATE menu set italiano = ?, english = ?, polski =?, francais =?, idPage =?, width = ?, priority = ?, idParentMenu = ?, idRule = ?  WHERE idMenu = ?";
             $q = $pdo->prepare($sql);
-            $q->execute(array($italiano,$english,$polski,$francais,$idPage, $width, $priority, $idParentMenu, $idRule));
+            $q->execute(array($italiano,$english,$polski,$francais,$idPage, $width, $priority, $idParentMenu, $idRule, $idMenu));
 			
             Database::disconnect();
             header("Location: index.php");
         }
-   }
+    } else {
+        $pdo = Database::connect();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "SELECT * FROM menu where idMenu = ?";
+        $q = $pdo->prepare($sql);
+        $q->execute(array($id));
+        $data = $q->fetch(PDO::FETCH_ASSOC);
+        $italiano = $data['italiano'];
+        $english = $data['english'];
+        $polski= $data['polski'];
+		$francais = $data['francais'];
+        $idPage = $data['idPage'];
+        $width = $data['width'];
+        $priority = $data['priority'];
+        $idParentMenu = $data['idParentMenu'];
+        $idRule = $data['idRule'];
+        
+        Database::disconnect();
+    }
 ?>
 <head>
     <meta charset="utf-8">
     <link   href="css/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap.min.js"></script>
+	
 	<style>
 		body {
 			background-color: #ABA3A3;
 		}
-		div {
-			background-color: #726B6B;
-		}
 	</style>
 </head>
-
+ 
 <body>
+
     <div class="container">
+     
                 <div class="span10 offset1">
                     <div class="row">
-                        <h3>Create a Menu</h3>
+                        <h3>Update a Menu</h3>
                     </div>
-                    <form class="form-horizontal" action="create.php" method="post">
-					  <div class="control-group <?php echo !empty($itaError)?'error':'';?>">
+             
+                    <form class="form-horizontal" action="update.php?id=<?php echo $id?>" method="post">
+                      <div class="control-group <?php echo !empty($itaError)?'error':'';?>">
                         <label class="control-label">Italiano</label>
                         <div class="controls">
                             <input name="italiano" type="text"  placeholder="Italiano" value="<?php echo !empty($italiano)?$italiano:'';?>">
@@ -190,11 +218,12 @@
                         </div>
                       </div>
                       <div class="form-actions">
-                          <button type="submit" class="btn btn-success">Create</button>
+                          <button type="submit" class="btn btn-success">Update</button>
                           <a class="btn" href="index.php">Back</a>
                         </div>
                     </form>
                 </div>
+                 
     </div> <!-- /container -->
   </body>
 </html>

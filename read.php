@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
+
 <head>
 
     <meta charset="utf-8">
@@ -33,6 +35,8 @@
 
 </head>
 
+
+
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
 
 	
@@ -58,9 +62,10 @@
                     <li>
                         <a class="page-scroll" href="#menu">Menu</a>
                     </li>
-                    <li>
+                   <!-- <li>
                         <a class="page-scroll" href="#pages">Pages</a>
                     </li>
+                    -->
                     <li>
                         <a class="page-scroll" href="#contact">Contact</a>
                     </li>
@@ -114,11 +119,11 @@
                    <tbody>
 				   
                   <?php
-                   include 'database.php';
+                   require 'database.php';
 				   
 				   
                    $pdo = Database::connect();
-                   $sql = 'SELECT * FROM menu WHERE idParentMenu = 1 ORDER BY priority';
+                   $sql = 'SELECT * FROM menu  ORDER BY idMenu';
                    foreach ($pdo->query($sql) as $row) {
 							
                             echo '<tr>';
@@ -142,7 +147,7 @@
                                 echo ' ';
                                 echo '<p><a class="btn btn-success" href="update.php?id='.$row['idMenu'].'">Update</a></p>';
                                 echo ' ';
-                                echo '<a class="btn btn-danger" href="delete.php?id='.$row['idMenu'].'">Delete</a>';
+                                echo '<a class="btn btn-primary btn" href="delete.php?id='.$row['idMenu'].'">Read</a>';
                                 
                                 echo '</td>';
 								
@@ -166,18 +171,7 @@
         </div>
     </section>
 
-    <!-- Download Section -->
-    <section id="pages" class="content-section text-center">
-        <div class="download-section">
-            <div class="container">
-                <div class="col-lg-8 col-lg-offset-2">
-                    <h2>Download Grayscale</h2>
-                    <p>You can download Grayscale for free on the preview page at Start Bootstrap.</p>
-                    <a href="http://startbootstrap.com/template-overviews/grayscale/" class="btn btn-default btn-lg">Visit Download Page</a>
-                </div>
-            </div>
-        </div>
-    </section>
+   
 
     <!-- Contact Section -->
     <section id="contact" class="container content-section text-center">
@@ -202,9 +196,9 @@
         </div>
     </section>
 
-    <!-- Map Section -->
+    <!-- Map Section 
     <div id="map"></div>
-
+    -->
     <!-- Footer -->
     <footer>
         <div class="container text-center">
@@ -222,8 +216,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 
     <!-- Google Maps API Key - Use your own API key to enable the map feature. More information on the Google Maps API can be found at https://developers.google.com/maps/ -->
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA&sensor=false"></script>
-
+    <!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA&sensor=false"></script>
+    -->
     <!-- Theme JavaScript -->
     <script src="js/grayscale.min.js"></script>
 
