@@ -17,66 +17,84 @@
                 <div class="span10 offset1">
                    <?php
                    require 'database.php';
-				   
-				   
+				   echo '<h2> MAIN MENU </h2>';
+				    
                    $pdo = Database::connect();
-                   $sql = 'SELECT * FROM menu WHERE idMenu = 1';
-                   foreach ($pdo->query($sql) as $main) {
-                            echo $main['idMenu'] . '--';
-                            echo $main['italiano'] . '--';
-							echo $main['english'] . '--';
-							echo $main['polski'] . '--';
-                            echo $main['francais'] . '--';
-                            echo $main['idPage'] . '--';
-                            echo $main['width'] . '--';
-                            echo $main['priority'] . '--';
-                            echo $main['idParentMenu'] . '--';
-                            echo $main['idRule'];
-                            echo '<br>';
-                   }
+                   echo '<table class="table table-bordered">';
+                   echo '<tr>';
                    $sql = 'SELECT * FROM menu  WHERE idParentMenu = 1 ORDER BY idMenu';
                    foreach ($pdo->query($sql) as $row) {
 							
                         
-                            echo $row['idMenu'] . '--';
-                            echo $row['italiano'] . '--';
-							echo $row['english'] . '--';
-							echo $row['polski'] . '--';
-                            echo $row['francais'] . '--';
-                            echo $row['idPage'] . '--';
-                            echo $row['width'] . '--';
-                            echo $row['priority'] . '--';
-                            echo $row['idParentMenu'] . '--';
-                            echo $row['idRule'];
-							echo '|<br>';
-                            echo '|<br>';
-                            echo '|<br>';
-                            echo '|<br>';
+                          
+                                echo '<th>';
+                           // echo $row['idMenu'] . '--';
+                            echo $row['italiano'];
+							
+                            //echo $row['english'] . '--';
+							//echo $row['polski'] . '--';
+                            //echo $row['francais'] . '--';
+                            //echo $row['idPage'] . '--';
+                            //echo $row['width'] . '--';
+                            //echo $row['priority'] . '--';
+                    // echo $row['idParentMenu']; //Para Comprobar que sean los hijos
+                            //echo $row['idRule'];
+                            echo '</th>';
+                            
+						
+
 							
                          //De momento muestra Todos los hijos de 1 y los hijos de sus hijos..
-                            $sql = 'SELECT * FROM menu  Where idParentMenu = '. $row['idMenu'];
-							
+                   }
+                   echo '</tr>';
+                    $sql = 'SELECT * FROM menu  WHERE idParentMenu = 1 ORDER BY idMenu';
+                    echo '<tr>';
+                   foreach ($pdo->query($sql) as $row1) {
+
+                            $sql = 'SELECT * FROM menu  Where idParentMenu = '. $row1['idMenu'];
+                            echo '<td>';
+                            echo '<ul>';
                             foreach ($pdo->query($sql) as $parent) {
                               
+                           
+                            echo '<li>';
+                            echo $parent['italiano'].'<br>';
+                            echo '</li>';
+                            
+                           
+                            
+                            /*
+                            $sql = 'SELECT * FROM menu  Where idParentMenu = '. $parent['idMenu'];
+                            foreach ($pdo->query($sql) as $parent2) {
+                              
                             echo '<br>' ;   
-                            echo $parent['idMenu'] . '--';
-                            echo $parent['italiano'] . '--';
-							echo $parent['english'] . '--';
-							echo $parent['polski'] . '--';
-                            echo $parent['francais'] . '--';
-                            echo $parent['idPage'] . '--';
-                            echo $parent['width'] . '--';
-                            echo $parent['priority'] . '--';
-                            echo $parent['idParentMenu'] . '--';
-                            echo $parent['idRule'];
+                            echo '------>'.$parent2['idMenu'] . '--';
+                            echo $parent2['italiano'] . '--';
+							echo $parent2['english'] . '--';
+							echo $parent2['polski'] . '--';
+                            echo $parent2['francais'] . '--';
+                            echo $parent2['idPage'] . '--';
+                            echo $parent2['width'] . '--';
+                            echo $parent2['priority'] . '--';
+                            echo $parent2['idParentMenu'] . '--';
+                            echo $parent2['idRule'];
                             
                             echo '<br>';
 
-                            echo '___________________________________________________________________';
+                            
                             
                              }
-                             echo'<br><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><br>';
-                             
+
+                            echo '___________________________________________________________________';
+                            */
+                            
+                             }
+                             echo '</ul>';
+                             echo '</td>';
+                            
+                   }
+                   echo '</tr>'
+                            
 							?>
 		
         
@@ -84,9 +102,12 @@
         
                             
 							<?php
-							
-                    }
+						
+                   // }
+                   // echo '</tr>';
                    Database::disconnect();
+                   echo '</table>';
+                   
                   ?>
                 </div>
                  
