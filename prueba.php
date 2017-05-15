@@ -18,6 +18,7 @@
                    <?php
                    require 'database.php';
 				   echo '<h2> MAIN MENU </h2>';
+                   echo '<p> <a href="create.php" class="btn btn-success">Add</a><font></font> <p/>';
 				    
                    $pdo = Database::connect();
                    echo '<table class="table table-bordered">';
@@ -29,7 +30,10 @@
                           
                                 echo '<th>';
                            // echo $row['idMenu'] . '--';
-                            echo $row['italiano'];
+                            echo $row['italiano'].'<br>';
+                            echo '<a class="btn btn-sm btn-danger" href="delete.php?id='.$row['idMenu'].'">Delete</a>';
+                            echo '<a class="btn btn-sm btn-success" href="update.php?id='.$row['idMenu'].'">Change</a><br>';
+                            echo '<a class="btn btn-sm btn-info" href="#">Clone</a>';
 							
                             //echo $row['english'] . '--';
 							//echo $row['polski'] . '--';
@@ -47,8 +51,8 @@
                          //De momento muestra Todos los hijos de 1 y los hijos de sus hijos..
                    }
                    echo '</tr>';
+                   echo '<tr>';
                     $sql = 'SELECT * FROM menu  WHERE idParentMenu = 1 ORDER BY idMenu';
-                    echo '<tr>';
                    foreach ($pdo->query($sql) as $row1) {
 
                             $sql = 'SELECT * FROM menu  Where idParentMenu = '. $row1['idMenu'];
@@ -58,7 +62,26 @@
                               
                            
                             echo '<li>';
+
+
                             echo $parent['italiano'].'<br>';
+                            echo '<a class="btn btn-danger btn-xs" href="delete.php?id='.$parent['idMenu'].'">Delete</a>';
+                            echo '<a class="btn btn-xs btn-success" href="update.php?id='.$parent['idMenu'].'">Change</a>';
+                            echo '<a class="btn btn-sm btn-info" href="#">Clone</a>';
+                            $sql = 'SELECT * FROM menu  Where idParentMenu = '. $parent['idMenu'];
+                            echo '<ul>';
+                            foreach ($pdo->query($sql) as $parent2) {
+                               echo '<li>';
+                                echo $parent2['italiano'].'<br>';
+                                echo '<a class="btn btn-danger btn-xs" href="delete.php?id='.$parent2['idMenu'].'">Delete</a>';
+                                echo '<a class="btn btn-xs btn-success" href="update.php?id='.$parent2['idMenu'].'">Change</a>';
+                                echo '<a class="btn btn-sm btn-info" href="#">Clone</a>';
+                               echo '</li>';
+
+                            }
+                            echo '</ul>';
+
+
                             echo '</li>';
                             
                            
