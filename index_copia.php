@@ -33,6 +33,15 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <!-- Este escript lo he añadido para poder mostrar y ocultar los hijos de cada uno. -->
+    <script>
+        function mostrar() {
+           obj = document.getElementById('oculto');
+            // obj = document.getElementById(etik);
+            obj.style.display = (obj.style.display == 'block') ? 'none' : 'block';
+            
+        }
+    </script>
 </head>
 
 
@@ -113,10 +122,9 @@
 					  <th>Priority</th>
                       <th>Id Parent Menu</th>
 					  <th>Id Rule</th>
-					  <th>Action</th> <!-- Esto lo he añadido tambien, es en la cabecera unicamente texto -->
                     </tr>
                   </thead>
-                   <tbody>
+                   </table> 
 				   
                   <?php
                    require 'database.php';
@@ -126,33 +134,59 @@
                    $sql = 'SELECT * FROM menu  ORDER BY idMenu';
                    foreach ($pdo->query($sql) as $row) {
 							
-                            echo '<tr>';
-                            echo '<td>'. $row['idMenu'] . '</td>';
-                            echo '<td>'. $row['italiano'] . '</td>';
-							echo '<td>'. $row['english'] . '</td>';
-							echo '<td>'. $row['polski'] . '</td>';
-                            echo '<td>'. $row['francais'] . '</td>';
-                            echo '<td>'. $row['idPage'] . '</td>';
-                            echo '<td>'. $row['width'] . '</td>';
-                            echo '<td>'. $row['priority'] . '</td>';
-                            echo '<td>'. $row['idParentMenu'] . '</td>';
-                            echo '<td>'. $row['idRule'] . '</td>';
-							echo '<td width=250>';
+                           
+                            echo $row['idMenu'] . '--';
+                            echo $row['italiano'] . '--';
+							echo $row['english'] . '--';
+							echo $row['polski'] . '--';
+                            echo $row['francais'] . '--';
+                            echo $row['idPage'] . '--';
+                            echo $row['width'] . '--';
+                            echo $row['priority'] . '--';
+                            echo $row['idParentMenu'] . '--';
+                            echo $row['idRule'];
 							
-                                //echo '<a class="btn" href="read.php?id='.$row['Title'].'">Read</a>';
-								//echo '<a data-toggle="modal"  href="#read'. $row['idMenu'].'" class="btn btn-primary btn">Read</a>';
-                               // UPDATE BUTTON echo '<a class="btn btn-success" href="update.php?id='.$row['idMenu'].'">Update</a>';
-								//<a href="#" data-reveal-id="myModal">Abrir la ventana modal</a>
+							
+
                                 
                                 echo ' ';
                                 echo '<p><a class="btn btn-success" href="update.php?id='.$row['idMenu'].'">Update</a></p>';
                                 echo ' ';
-                                echo '<a class="btn btn-primary btn" href="delete.php?id='.$row['idMenu'].'">Read</a>';
+                                echo '<a class="btn btn-danger" href="delete.php?id='.$row['idMenu'].'">Delete</a>';
+                                echo  ' ';
+                               // echo '<a class="btn btn-primary btn" href="read.php?id='.$row['idMenu'].'">Read</a>';
+                                //echo '<a class="btn btn-primary btn" href="#menu" onclick="mostrar('.'oculto'.$row['idMenu'].');" />Read</a>';
+                                echo '<a class="btn btn-primary btn" href="#menu" onclick="mostrar('.'oculto'.');" />Read</a>';
                                 
-                                echo '</td>';
+                                
+                                
 								
-                            echo '</tr>';
+                            echo '<br>';
+                          //  echo '<div id="oculto'.$row['idMenu'].'" style="display:none">'; 
+                            echo '<div id="oculto" style="display:none">'; 
+                            $sql = 'SELECT * FROM menu  Where idParentMenu = '. $row['idMenu'];
 							
+                            foreach ($pdo->query($sql) as $parent) {
+                              
+                            echo '<br>' ;   
+                            echo $parent['idMenu'] . '--';
+                            echo $parent['italiano'] . '--';
+							echo $parent['english'] . '--';
+							echo $parent['polski'] . '--';
+                            echo $parent['francais'] . '--';
+                            echo $parent['idPage'] . '--';
+                            echo $parent['width'] . '--';
+                            echo $parent['priority'] . '--';
+                            echo $parent['idParentMenu'] . '--';
+                            echo $parent['idRule'];
+                            
+                            echo '<br>';
+
+                            echo '___________________________________________________________________';
+                            
+                             }
+                             echo'<br><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>';
+                             echo '</div>';
 							?>
 		
         
@@ -161,12 +195,10 @@
                             
 							<?php
 							
-                   }
+                    }
                    Database::disconnect();
                   ?>
-                  </tbody>
                  
-            </table>      
             </div>
         </div>
     </section>
@@ -229,4 +261,3 @@
 </body>
 
 </html>
-

@@ -62,10 +62,11 @@
 			$valid = false;
 		}
 		
-		if(empty($idPage)) {
+		/*if(empty($idPage)) {
 			$pagError = "Please enter Id Page";
 			$valid = false;
 		}
+        *///He tenido que quitar esto porque me daba error cuando el idPage = 0
 		if(empty($width)) {
 			$widError = "Please enter Width";
 			$valid = false;
@@ -78,10 +79,7 @@
 			$idpError = "Please enter Id Parent Menu";
 			$valid = false;
 		}
-		if(empty($idRule)) {
-			$idrError = "Please enter Id Rule";
-			$valid = false;
-		}
+		
          
         // update data
         if ($valid) {

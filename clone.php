@@ -11,20 +11,30 @@
         
                         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                         $sql = "INSERT INTO menu (italiano, english, polski, francais, idPage, width, priority, idParentMenu, idRule) select concat('NEW ',italiano), concat('NEW ',english), concat('NEW ',polski), concat('NEW ',francais), idPage, width, priority, idParentMenu, idRule from menu where idMenu = ".$id;
-                        //echo $sql;
-                        //die();
+                        
                         $q = $pdo->prepare($sql);
                         $q->execute(array($id));
+                        
+                        //var_dump($parentId);
+                        //die();
+
+                        $q = $pdo->query("Select MAX(idMenu) as max from menu");
+                        $idValue = $q->fetch(); //Cojo el id del clon del principal
+
 
                         $sql = 'SELECT * FROM menu  Where idParentMenu = '. $id;
                         foreach ($pdo->query($sql) as $parent) {
-                        $sql = "INSERT INTO menu (italiano, english, polski, francais, idPage, width, priority, idParentMenu, idRule) select concat('NEW ',italiano), concat('NEW ',english), concat('NEW ',polski), concat('NEW ',francais), idPage, width, priority, idParentMenu, idRule from menu where idMenu = ".$parent['idMenu'];
+                        $sql = "INSERT INTO menu (italiano, english, polski, francais, idPage, width, priority, idParentMenu, idRule) select concat('NEW ',italiano), concat('NEW ',english), concat('NEW ',polski), concat('NEW ',francais), idPage, width, priority, ".$idValue['max'].", idRule from menu where idMenu = ".$parent['idMenu'];
                         $q = $pdo->prepare($sql);
                         $q->execute(array($parent['idMenu']));
 
+                        $q = $pdo->query("Select MAX(idMenu) as max from menu");
+                        $idValue2 = $q->fetch(); //Cojo el id del clon del principal
+                        
+                        
                             $sql = 'SELECT * FROM menu  Where idParentMenu = '.$parent['idMenu'];        
                             foreach ($pdo->query($sql) as $parent2) {
-                            $sql = "INSERT INTO menu (italiano, english, polski, francais, idPage, width, priority, idParentMenu, idRule) select concat('NEW ',italiano), concat('NEW ',english), concat('NEW ',polski), concat('NEW ',francais), idPage, width, priority, idParentMenu, idRule from menu where idMenu = ".$parent2['idMenu'];
+                            $sql = "INSERT INTO menu (italiano, english, polski, francais, idPage, width, priority, idParentMenu, idRule) select concat('NEW ',italiano), concat('NEW ',english), concat('NEW ',polski), concat('NEW ',francais), idPage, width, priority, ".$idValue2['max'].", idRule from menu where idMenu = ".$parent2['idMenu'];
                             $q = $pdo->prepare($sql);
                             $q->execute(array($parent2['idMenu']));
                             }
